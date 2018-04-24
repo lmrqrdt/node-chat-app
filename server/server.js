@@ -9,8 +9,6 @@ const app = express();
 // console.log(__dirname + '/../public');
 // console.log(publicPath);
 
-const port = 3000;
-
 // instructor's solution for serving index.html
 app.use(express.static(publicPath));
 
