@@ -1,9 +1,13 @@
 const express = require('express')
+const http = require('http');
 const path = require('path');
+const socketIO = require('socket.io');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
-const app = express();
+let app = express();
+let server = http.createServer(app);
+let io = socketIO(server);
 
 // This code compares two methods for getting to the public folder
 // console.log(__dirname + '/../public');
@@ -17,6 +21,14 @@ app.use(express.static(publicPath));
 //   res.sendFile(path.join(publicPath + '/index.html'));
 // });
 
-app.listen(port, () => {
+io.on('connection', (socket) => {
+  console.log('New user connected');
+
+  socket.on('disconnect', () => {
+    console.log('Client has disconnected');
+  });
+});
+
+server.listen(port, () => {
   console.log(`Started on port ${port}`);
 });
