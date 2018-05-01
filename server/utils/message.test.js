@@ -11,7 +11,8 @@ describe ('generateMessage', () => {
     expect(message).toMatchObject({
       from: from,
       text: text,
-    })
-    //.expect(typeof message.createdAt).toBe('number')
+      //createdAt: createTime,
+    });
+    expect(typeof message.createdAt).toBe('number');
   });
 });
