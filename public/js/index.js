@@ -1,13 +1,19 @@
 const socket = io();
 
 socket.on('updateRoomList', function (rooms) {
-  let ol = $('<ol></ol>');
+  const datalist = $('#rooms').empty();
 
   rooms.forEach(function (room) {
-    ol.append($('<li></li>').text(room));
+    datalist.append('<option value="' + room.name + '">' + room.numUsers + '</option>');
   });
 
-  $('#rooms').html(ol);
+  // let ol = $('<ol></ol>');
+  //
+  // rooms.forEach(function (room) {
+  //   ol.append($('<li></li>').text(room));
+  // });
+  //
+  // $('#rooms').html(ol);
 });
 
 socket.emit('displayRoomList', (err) => {

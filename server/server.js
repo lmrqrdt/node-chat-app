@@ -32,6 +32,11 @@ io.on('connection', (socket) => {
     if (!isRealString(params.name) || !isRealString(params.room)) {
       return callback ('Name and room name are required.');
     }
+
+    if (users.getUserList(params.room).includes(params.name)) {
+      return callback('That username is already in use, please choose a unique username');
+    }
+
     socket.join(params.room.toLowerCase());
     users.removeUser(socket.id);
     users.addUser(socket.id, params.name, params.room.toLowerCase());
