@@ -38,6 +38,8 @@ io.on('connection', (socket) => {
 
     io.to(params.room.toLowerCase()).emit('updateUserList', users.getUserList(params.room.toLowerCase()));
 
+    io.emit('updateRoomList', users.getAllRoomsList());
+
     // socket.leave(params.room)
 
     // io.emit -> io.to('The office fans').emit
@@ -49,6 +51,14 @@ io.on('connection', (socket) => {
     socket.broadcast.to(params.room.toLowerCase()).emit('newMessage', generateMessage("Admin", `${params.name} has joined.`));
 
     callback();
+  });
+
+  socket.on('displayRoomList', (callback) => {
+    let allRooms = users.getAllRoomsList();
+
+    io.emit('updateRoomList', allRooms);
+
+    callback(!allRooms || allRooms.length <= 0);
   });
 
   socket.on('createMessage', (message, callback) => {
@@ -68,6 +78,7 @@ io.on('connection', (socket) => {
     // });
   });
 
+
   socket.on('createLocationMessage', (coords) => {
     let user = users.getUser(socket.id);
 
@@ -77,15 +88,18 @@ io.on('connection', (socket) => {
 
   });
 
+
   socket.on('disconnect', () => {
     let user = users.removeUser(socket.id);
     if (user) {
       io.to(user.room).emit('updateUserList', users.getUserList(user.room));
       io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room.`));
+      io.emit('updateRoomList', users.getAllRoomsList());
     }
   });
 });
 
 server.listen(port, () => {
+
   console.log(`Started on port ${port}`);
 });

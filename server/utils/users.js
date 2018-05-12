@@ -1,10 +1,10 @@
-const _ = require('lodash');
+// const _ = require('lodash');
 
-[{
-  id: '/alblemerm',
-  name: 'Larry',
-  room: 'Starbucks'
-}]
+// [{
+//   id: '/alblemerm',
+//   name: 'Larry',
+//   room: 'Starbucks'
+// }]
 
 class Users {
   constructor () {
@@ -33,6 +33,13 @@ class Users {
     let namesArray = users.map((user) => user.name);
 
     return namesArray;
+  }
+  getAllRoomsList () {
+    let rooms = this.users.map((user) => user.room);
+
+    const unique = rooms.filter((v, i, a) => a.indexOf(v) === i); 
+
+    return unique;
   }
 }
 
